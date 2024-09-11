@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sample Website</title>
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Welcome to Our Site</h1>
+        <button id="loadContent">Load New Content</button>
+    </header>
+    <main id="contentArea">
+        <p>Existing content here.</p>
+    </main>
+    <script>
+        document.getElementById('loadContent').addEventListener('click', function () {
+            fetch('https://jsonplaceholder.typicode.com/posts/1')
+                .then(response => response.json())
+                .then(data => {
+                    const contentArea = document.getElementById('contentArea');
+                    contentArea.innerHTML = `<h2>${data.title}</h2><p>${data.body}</p>`;
+                });
+        });
+    </script>
+</body>
+
+</html>

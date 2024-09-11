@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Puppy Adoption</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fff;
+            color: #333;
+            /* Improved contrast */
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        li {
+            /*sufficient space */
+            padding: 0.3rem;
+        }
+
+        .content {
+            margin: 0 auto;
+            width: 80%;
+        }
+
+        a {
+            color: #0056b3;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        img {
+            width: 500px;
+            height: auto;
+        }
+
+        button {
+            background-color: #091e35;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        button:focus,
+        a:focus {
+            outline: 2px solid #ff00ff;
+            /* Visible focus outline */
+        }
+    </style>
+</head>
+
+<body>
+    <header role="banner">
+        <h1>Puppy Adoption</h1>
+        <nav role="navigation" aria-label="Main navigation">
+            <ul>
+                <li><a href="#about">About Us</a></li> <!-- Added anchor link to provide context -->
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main role="main">
+        <section id="about" class="content" aria-labelledby="about-title">
+            <h2 id="about-title">About Puppy Adoption</h2>
+            <p>We help you find the best puppies for adoption. Find your new furry friend today!</p>
+            <img src="puppy1.jpeg" alt="A cute puppy playing in the garden"> <!-- Added descriptive alt text -->
+            <p>Learn more about <a href="#process">our adoption process</a> and read <a href="#success-stories">success
+                    stories</a>.</p> <!-- Added context to links -->
+        </section>
+
+        <section id="services" class="content" aria-labelledby="services-title">
+            <h2 id="services-title">Our Services</h2>
+            <button id="showMoreInfo" aria-controls="moreServices" aria-expanded="false">Click to see more
+                services</button>
+            <div id="moreServices" class="hidden" aria-live="polite">
+                <h3>Additional Services</h3>
+                <p>We also offer grooming, training, and pet care services. Explore more options today!</p>
+            </div>
+        </section>
+
+        <section id="contact" class="content" aria-labelledby="contact-title">
+            <h2 id="contact-title">Contact Us</h2>
+            <form>
+                <label for="name">Your Name</label> <!-- Added label for name input -->
+                <input type="text" id="name" name="name"><br><br>
+
+                <label for="email">Your Email</label> <!-- Added label for email input -->
+                <input type="email" id="email" name="email"><br><br>
+
+                <button type="submit">Submit</button> <!-- Accessible button with focus outline -->
+            </form>
+        </section>
+    </main>
+
+    <footer role="contentinfo">
+        <p>&copy; 2024 Puppy Adoption</p>
+    </footer>
+
+    <script>
+        const button = document.getElementById('showMoreInfo');
+        const moreServices = document.getElementById('moreServices');
+
+        button.addEventListener('click', function () {
+            const isHidden = moreServices.classList.contains('hidden');
+            moreServices.classList.toggle('hidden');
+            button.setAttribute('aria-expanded', !isHidden); // Update aria-expanded to reflect the button state
+        });
+    </script>
+</body>
+
+</html>
