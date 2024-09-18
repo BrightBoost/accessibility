@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accessible Drag and Drop</title>
+    <style>
+        .container {
+            display: flex;
+            justify-content: space-between;
+            max-width: 600px;
+            margin: 50px auto;
+        }
+        .box {
+            width: 200px;
+            height: 200px;
+            border: 2px solid black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            margin: 10px;
+        }
+        .draggable {
+            width: 100px;
+            height: 100px;
+            background-color: lightblue;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: move;
+        }
+        .droppable {
+            background-color: lightyellow;
+        }
+        .focus {
+            outline: 3px dashed blue;
+        }
+    </style>
+</head>
+<body>
+    <h1>Accessible Drag and Drop</h1>
+    <div class="container">
+        <div id="dragItem" class="box draggable" tabindex="0" role="button" aria-grabbed="false" draggable="true" aria-label="Draggable item">
+            Drag me
+        </div>
+        <div id="dropZone1" class="box droppable" tabindex="0" role="button" aria-dropeffect="move" aria-label="Drop Zone 1">
+            Drop Zone 1
+        </div>
+        <div id="dropZone2" class="box droppable" tabindex="0" role="button" aria-dropeffect="move" aria-label="Drop Zone 2">
+            Drop Zone 2
+        </div>
+    </div>
+
+    <script>
+        const dragItem = document.getElementById('dragItem');
+        const dropZones = document.querySelectorAll('.droppable');
+
+        let draggedElement = null;
+
+        // Add mouse drag functionality
+        dragItem.addEventListener('dragstart', (event) => {
+            draggedElement = event.target;
+            event.target.style.opacity = 0.5;
+            event.dataTransfer.effectAllowed = "move";
+        });
+
+        dragItem.addEventListener('dragend', (event) => {
+            event.target.style.opacity = 1;
+        });
+
+        dropZones.forEach(dropZone => {
+            dropZone.addEventListener('dragover', (event) => {
+                event.preventDefault(); // Enable dropping
+                event.dataTransfer.dropEffect = "move";
+            });
+
+            dropZone.addEventListener('drop', (event) => {
+                event.preventDefault();
+                if (draggedElement) {
+                    event.target.appendChild(draggedElement);
+                    draggedElement = null;
+                }
+            });
+        });
+
+        // Keyboard navigation support
+        dragItem.addEventListener('keydown', (event) => {
+            if (event.key === "Enter" || event.key === " ") {
+                const isGrabbed = dragItem.getAttribute('aria-grabbed') === 'true';
+                if (!isGrabbed) {
+                    dragItem.setAttribute('aria-grabbed', 'true');
+                    dragItem.classList.add('focus');
+                } else {
+                    dragItem.setAttribute('aria-grabbed', 'false');
+                    dragItem.classList.remove('focus');
+                }
+            }
+        });
+
+        dropZones.forEach(dropZone => {
+            dropZone.addEventListener('keydown', (event) => {
+                if ((event.key === "Enter" || event.key === " ") && dragItem.getAttribute('aria-grabbed') === 'true') {
+                    dropZone.appendChild(dragItem);
+                    dragItem.setAttribute('aria-grabbed', 'false');
+                    dragItem.classList.remove('focus');
+                }
+            });
+
+            dropZone.addEventListener('focus', () => {
+                dropZone.classList.add('focus');
+            });
+
+            dropZone.addEventListener('blur', () => {
+                dropZone.classList.remove('focus');
+            });
+        });
+    </script>
+</body>
+</html>
